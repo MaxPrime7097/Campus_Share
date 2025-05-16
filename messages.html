@@ -1,0 +1,197 @@
+{% extends "base.html" %}
+
+{% block content %}
+<style>
+  body { background: #18191a !important; }
+  .insta-messages-container {
+    min-height: 85vh;
+    height: 85vh;
+    margin-top: 2vh;
+    background: #18191a;
+    border-radius: 1rem;
+    box-shadow: 0 2px 16px rgba(0,0,0,0.12);
+    display: flex;
+    overflow: hidden;
+  }
+  .insta-sidebar {
+    width: 320px;
+    background: #23272b;
+    padding: 1.5rem 0.5rem 1.5rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+    border-right: 1px solid #222;
+    overflow-y: auto;
+  }
+  .insta-sidebar .sidebar-title {
+    color: #ff8800;
+    font-weight: bold;
+    font-size: 1.2rem;
+    margin-bottom: 1.5rem;
+    letter-spacing: 1px;
+  }
+  .insta-sidebar .friend {
+    display: flex;
+    align-items: center;
+    padding: 0.6rem 0.8rem;
+    border-radius: 0.6rem;
+    margin-bottom: 0.3rem;
+    cursor: pointer;
+    color: #fff;
+    text-decoration: none;
+    transition: background 0.2s;
+    font-size: 1.05rem;
+  }
+  .insta-sidebar .friend.active, .insta-sidebar .friend:hover {
+    background: #343a40;
+    color: #ff8800;
+    font-weight: bold;
+  }
+  .insta-sidebar .avatar {
+    background: #ff8800;
+    color: #fff;
+    border-radius: 50%;
+    width: 38px;
+    height: 38px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    margin-right: 0.9rem;
+  }
+  .insta-chat-area {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    background: #18191a;
+    padding: 0;
+    min-width: 0;
+  }
+  .insta-chat-header {
+    background: #23272b;
+    color: #fff;
+    padding: 1rem 2rem;
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid #222;
+    font-size: 1.1rem;
+    font-weight: 500;
+    min-height: 70px;
+  }
+  .insta-chat-header .avatar {
+    width: 44px;
+    height: 44px;
+    font-size: 1.4rem;
+    margin-right: 1rem;
+  }
+  .insta-chat-messages {
+    flex: 1;
+    padding: 2rem 2rem 1rem 2rem;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    background: #18191a;
+  }
+  .chat-bubble {
+    display: inline-block;
+    padding: 0.7rem 1.2rem;
+    border-radius: 1.5rem;
+    margin-bottom: 0.5rem;
+    max-width: 65%;
+    font-size: 1.05rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    word-break: break-word;
+  }
+  .chat-bubble.me {
+    background: #ff8800;
+    color: #fff;
+    align-self: flex-end;
+    margin-left: auto;
+    margin-right: 0;
+  }
+  .chat-bubble.them {
+    background: #343a40;
+    color: #fff;
+    align-self: flex-start;
+    margin-right: auto;
+    margin-left: 0;
+  }
+  .chat-timestamp {
+    font-size: 0.8rem;
+    color: #bbb;
+    margin-top: 0.1rem;
+    margin-bottom: 0.7rem;
+    text-align: right;
+  }
+  .insta-chat-footer {
+    background: #23272b;
+    border-top: 1px solid #222;
+    padding: 1rem 2rem;
+  }
+  .insta-chat-footer form {
+    display: flex;
+    gap: 0.7rem;
+  }
+  .insta-chat-footer input[type="text"] {
+    background: #18191a;
+    color: #fff;
+    border: 1px solid #333;
+    border-radius: 2rem;
+    padding: 0.7rem 1.2rem;
+    flex: 1;
+    outline: none;
+  }
+  .insta-chat-footer button {
+    background: #ff8800;
+    color: #fff;
+    border: none;
+    border-radius: 2rem;
+    padding: 0.7rem 2rem;
+    font-weight: bold;
+    transition: background 0.2s;
+  }
+  .insta-chat-footer button:hover {
+    background: #e67600;
+  }
+</style>
+<div class="insta-messages-container mx-auto">
+  <!-- Sidebar amis -->
+  <div class="insta-sidebar">
+    <div class="sidebar-title">Messages</div>
+    {% for friend in friends %}
+      <a href="{{ url_for('messages', username=friend.username) }}" class="friend{% if friend.username == user.username %} active{% endif %}">
+        <span class="avatar">{{ friend.username[0]|upper }}</span>
+        <span>{{ friend.username }}</span>
+      </a>
+    {% else %}
+      <div class="text-muted">Aucun ami</div>
+    {% endfor %}
+  </div>
+  <!-- Zone de chat -->
+  <div class="insta-chat-area">
+    <div class="insta-chat-header">
+      <span class="avatar bg-primary text-white">{{ user.username[0]|upper }}</span>
+      <span>{{ user.username }}</span>
+    </div>
+    <div class="insta-chat-messages">
+      {% for msg in messages %}
+        <div class="d-flex flex-column {% if msg.sender_id == current_user.id %}align-items-end{% else %}align-items-start{% endif %}">
+          <div class="chat-bubble {% if msg.sender_id == current_user.id %}me{% else %}them{% endif %}">
+            {{ msg.content }}
+          </div>
+          <div class="chat-timestamp">
+            {{ msg.timestamp.strftime('%d/%m/%Y %H:%M') }}
+            {% if msg.sender_id == current_user.id %}(Vous){% endif %}
+          </div>
+        </div>
+      {% else %}
+        <div class="text-center text-muted">Aucun message pour l'instant.</div>
+      {% endfor %}
+    </div>
+    <div class="insta-chat-footer">
+      <form method="POST" autocomplete="off">
+        <input type="text" name="content" placeholder="Votre message..." required autocomplete="off">
+        <button type="submit">Envoyer</button>
+      </form>
+    </div>
+  </div>
+{% endblock %}

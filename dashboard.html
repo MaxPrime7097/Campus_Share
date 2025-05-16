@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+  <div class="row">
+    <!-- Colonne Profil -->
+    <div class="col-md-3 mb-4">
+      <div class="card shadow-sm">
+        <div class="card-body text-center">
+          <span class="rounded-circle bg-primary text-white d-inline-block mb-2" style="width:70px; height:70px; line-height:70px; font-size:2.5rem;">
+            {{ user.username[0]|upper }}
+          </span>
+          <h5 class="card-title mt-2">{{ user.username }}</h5>
+          <p class="text-muted mb-1">{{ user.filiere }} - {{ user.niveau }}</p>
+          <p class="mb-1"><i class="bi bi-people"></i> Relations : {{ user.friends.count() }}</p>
+          <a href="{{ url_for('profile') }}" class="btn btn-outline-primary btn-sm mt-2">Voir mon profil</a>
+        </div>
+      </div>
+      <div class="card mt-3">
+        <div class="card-header bg-light">Éléments enregistrés</div>
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item text-muted">À venir…</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Colonne Fil d'actualité -->
+    <div class="col-md-6 mb-4">
+      <div class="card shadow-sm mb-3">
+        <div class="card-body">
+          <form method="POST" action="{{ url_for('feed') }}">
+            <div class="mb-2">
+              <textarea class="form-control" name="content" rows="2" placeholder="Commencer un post..."></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary btn-sm">Publier</button>
+          </form>
+        </div>
+      </div>
+      {% for post in posts %}
+      <div class="card mb-3 shadow-sm">
+        <div class="card-body">
+          <h6 class="card-subtitle mb-2 text-muted">{{ post.user.username }} <span class="small">• {{ post.timestamp.strftime('%d/%m/%Y %H:%M') }}</span></h6>
+          <p class="card-text">{{ post.content }}</p>
+        </div>
+      </div>
+      {% else %}
+      <div class="alert alert-info">Aucun post pour le moment.</div>
+      {% endfor %}
+    </div>
+
+    <!-- Colonne Widgets -->
+    <div class="col-md-3 mb-4">
+      <div class="card shadow-sm mb-3">
+        <div class="card-header bg-light">Suggestions d'amis</div>
+        <ul class="list-group list-group-flush">
+          {% for u in suggestions %}
+          <li class="list-group-item d-flex justify-content-between align-items-center">
+            <span>{{ u.username }}</span>
+            <a href="{{ url_for('profile_username', username=u.username) }}" class="btn btn-outline-success btn-sm">Voir</a>
+          </li>
+          {% else %}
+          <li class="list-group-item text-muted">Aucune suggestion.</li>
+          {% endfor %}
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-header bg-light">Infos</div>
+        <div class="card-body">
+          <p class="small text-muted">Ajoute ici des widgets, annonces, ou autres infos utiles.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

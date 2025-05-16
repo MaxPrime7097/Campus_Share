@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Campus Share</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <style>
+:root {
+  --bs-primary: #ff8800 !important; /* Orange vif */
+}
+.bg-primary {
+  background-color: #ff8800 !important;
+}
+.text-primary {
+  color: #ff8800 !important;
+}
+.btn-primary {
+  background-color: #ff8800 !important;
+  border-color: #ff8800 !important;
+}
+.btn-primary:hover, .btn-primary:focus {
+  background-color: #e67600 !important;
+  border-color: #e67600 !important;
+}
+</style>
+</head>
+<body>
+    <header>
+        <h1>Campus Share</h1>
+        <nav>
+            <a href="{{ url_for('index') }}">Accueil</a>
+            {% if current_user.is_authenticated %}
+                <a href="{{ url_for('profile') }}">Profil</a>
+                <a href="{{ url_for('messages', username=current_user.username) }}">Messagerie</a>
+                <a href="{{ url_for('upload_file') }}">Uploader un fichier</a>
+                <a href="{{ url_for('files') }}">Fichiers disponibles</a>
+                <a href="{{ url_for('help') }}">Demander de l'aide</a>
+                <a href="{{ url_for('exams') }}">Anciennes épreuves</a>
+                <a href="{{ url_for('logout') }}">Se déconnecter</a>
+            {% else %}
+                <a href="{{ url_for('login') }}">Se connecter</a>
+                <a href="{{ url_for('register') }}">S'inscrire</a>
+            {% endif %}
+        </nav>
+    </header>
+    <main>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="flash {{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+        {% block content %}{% endblock %}
+    </main>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h2>Poster une Demande</h2>
+    <form method="POST">
+        <label for="title">Titre :</label>
+        <input type="text" id="title" name="title" required>
+        <label for="description">Description :</label>
+        <textarea id="description" name="description" required></textarea>
+        <button type="submit">Poster</button>
+    </form>
+{% endblock %}

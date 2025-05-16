@@ -1,0 +1,17 @@
+<!-- filepath: c:\Users\lione\Campus Share\templates\feed.html -->
+{% extends "base.html" %}
+{% block content %}
+<main class="container mt-4">
+    <h2>Fil d'actualité</h2>
+    <form method="POST" class="mb-4">
+        <textarea name="content" class="form-control" rows="3" placeholder="Exprime-toi..."></textarea>
+        <button type="submit" class="btn mt-2">Publier</button>
+    </form>
+    {% for post in posts %}
+    <div class="list-group-item mb-3">
+        <strong>{{ post.user.username }}</strong> <span style="color: #888;">{{ post.timestamp.strftime('%d/%m/%Y %H:%M') }}</span>
+        <div>{{ post.content }}</div>
+    </div>
+    {% endfor %}
+</main>
+{% endblock %}

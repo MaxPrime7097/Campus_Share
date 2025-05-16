@@ -1,0 +1,200 @@
+/* Color palette */
+:root {
+    --orange: #ff9800;
+    --black: #181818;
+    --white: #fff;
+    --gray: #f5f5f5;
+    --shadow: 0 2px 8px rgba(24,24,24,0.08);
+}
+
+/* Reset and base styles */
+body {
+    background: var(--gray);
+    color: var(--black);
+    font-family: 'Segoe UI', 'Roboto', Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+}
+
+a {
+    color: var(--orange);
+    text-decoration: none;
+    transition: color 0.2s;
+}
+a:hover {
+    color: var(--black);
+    text-decoration: underline;
+}
+
+/* Header and Navbar */
+header {
+    background: var(--black);
+    color: var(--white);
+    box-shadow: var(--shadow);
+    padding-bottom: 0.5rem;
+}
+
+header h1 {
+    margin: 0;
+    padding: 1rem 2rem 0.5rem 2rem;
+    font-size: 2.2rem;
+    letter-spacing: 2px;
+    font-weight: 700;
+}
+
+nav {
+    display: flex;
+    gap: 1.5rem;
+    padding: 0.5rem 2rem;
+    background: var(--black);
+}
+
+nav a {
+    color: var(--white);
+    font-weight: 500;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    transition: background 0.2s, color 0.2s;
+}
+
+nav a:hover, nav a.active {
+    background: var(--orange);
+    color: var(--black);
+}
+
+/* Main content */
+main {
+    max-width: 900px;
+    margin: 2rem auto;
+    background: var(--white);
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+    padding: 2rem 2.5rem;
+}
+
+h2, h3 {
+    color: var(--orange);
+    margin-top: 0;
+    font-weight: 700;
+}
+
+ul, ol {
+    padding-left: 1.5rem;
+}
+
+.list-group {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.list-group-item {
+    background: var(--gray);
+    border: none;
+    border-radius: 6px;
+    margin-bottom: 0.5rem;
+    padding: 1rem 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    transition: background 0.2s;
+}
+
+.list-group-item:hover {
+    background: var(--orange);
+    color: var(--black);
+}
+
+.alert {
+    padding: 1rem;
+    border-radius: 6px;
+    background: var(--orange);
+    color: var(--white);
+    font-weight: 500;
+    margin-bottom: 1rem;
+}
+
+/* Forms */
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+}
+
+input[type="text"], input[type="password"], input[type="file"], select, textarea {
+    padding: 0.7rem 1rem;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 1rem;
+    background: var(--gray);
+    color: var(--black);
+    transition: border 0.2s;
+}
+
+input:focus, textarea:focus, select:focus {
+    border-color: var(--orange);
+    outline: none;
+}
+
+button, .btn {
+    background: var(--orange);
+    color: var(--white);
+    border: none;
+    border-radius: 6px;
+    padding: 0.7rem 1.5rem;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+    box-shadow: var(--shadow);
+}
+
+button:hover, .btn:hover {
+    background: var(--black);
+    color: var(--orange);
+}
+
+.pagination {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 2rem;
+    justify-content: center;
+}
+
+.pagination .page-item {
+    display: inline-block;
+}
+
+.pagination .page-link {
+    background: var(--gray);
+    color: var(--black);
+    border: none;
+    border-radius: 4px;
+    padding: 0.5rem 1rem;
+    transition: background 0.2s, color 0.2s;
+}
+
+.pagination .page-item.active .page-link,
+.pagination .page-link:hover {
+    background: var(--orange);
+    color: var(--white);
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+    main {
+        padding: 1rem 0.5rem;
+    }
+    header h1 {
+        font-size: 1.3rem;
+        padding: 1rem 1rem 0.5rem 1rem;
+    }
+    nav {
+        flex-direction: column;
+        gap: 0.5rem;
+        padding: 0.5rem 1rem;
+    }
+}
+.bg-orange { background: #ff9800 !important; }
+.text-white { color: #fff !important; }

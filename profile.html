@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-5">
+  <div class="card shadow-sm mb-4">
+    <div class="card-body">
+      <div class="d-flex align-items-center mb-3">
+        <div class="me-3">
+          <span class="rounded-circle bg-primary text-white d-inline-block text-center" style="width:60px; height:60px; line-height:60px; font-size:2rem;">
+            {{ user.username[0]|upper }}
+          </span>
+        </div>
+        <div>
+          <h3 class="mb-0">{{ user.username }}</h3>
+          <small class="text-muted">{{ user.filiere }} - {{ user.niveau }}</small>
+        </div>
+      </div>
+      {% if current_user.is_authenticated and current_user.id != user.id and not current_user.is_friend(user) %}
+        <a href="{{ url_for('add_friend', user_id=user.id) }}" class="btn btn-success btn-sm mb-2">Ajouter comme ami</a>
+      {% endif %}
+      <form method="POST" class="row g-2 mb-3">
+        <div class="col-md-5">
+          <input type="text" class="form-control" id="filiere" name="filiere" value="{{ user.filiere }}" required>
+        </div>
+        <div class="col-md-5">
+          <input type="text" class="form-control" id="niveau" name="niveau" value="{{ user.niveau }}" required>
+        </div>
+        <div class="col-md-2">
+          <button type="submit" class="btn btn-primary w-100">Mettre à jour</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-4 mb-4">
+      <div class="card h-100">
+        <div class="card-header bg-light">Mes amis</div>
+        <ul class="list-group list-group-flush">
+          {% for friend in user.friends %}
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+              <a href="{{ url_for('profile_username', username=friend.username) }}">{{ friend.username }}</a>
+              {% if current_user.is_authenticated and current_user.id == user.id %}
+                <a href="{{ url_for('remove_friend', user_id=friend.id) }}" class="btn btn-outline-danger btn-sm">Retirer</a>
+              {% endif %}
+            </li>
+          {% else %}
+            <li class="list-group-item text-muted">Aucun ami pour l'instant.</li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+    <div class="col-md-4 mb-4">
+      <div class="card h-100">
+        <div class="card-header bg-light">Mes fichiers partagés</div>
+        <ul class="list-group list-group-flush">
+          {% for file in user.files %}
+            <li class="list-group-item">
+              <a href="{{ url_for('download_file', filename=file.filename) }}">{{ file.filename }}</a>
+            </li>
+          {% else %}
+            <li class="list-group-item text-muted">Aucun fichier partagé pour l'instant.</li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+    <div class="col-md-4 mb-4">
+      <div class="card h-100">
+        <div class="card-header bg-light">Mes demandes d'aide</div>
+        <ul class="list-group list-group-flush">
+          {% for request in user.help_requests %}
+            <li class="list-group-item">
+              <strong>{{ request.title }}</strong><br>
+              <span class="text-muted">{{ request.description }}</span>
+            </li>
+          {% else %}
+            <li class="list-group-item text-muted">Aucune demande d'aide pour l'instant.</li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
